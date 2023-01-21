@@ -508,10 +508,30 @@ public class SheetViewController: UIViewController {
         let windowRect = self.view.convert(self.view.bounds, to: nil)
         let actualHeight = windowRect.maxY - keyboardRect.origin.y
         self.adjustForKeyboard(height: actualHeight + (0.3 * windowRect.height), from: notification)
+        
+        let duration:TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+        let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
+        
+        self.resize(to: .fullscreen, duration: duration, options: animationCurve, animated: true, complete: {
+            self.resize(to: .fullscreen)
+        })
     }
     
     @objc func keyboardDismissed(_ notification: Notification) {
+        guard let info:[AnyHashable: Any] = notification.userInfo, let keyboardRect:CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
         self.adjustForKeyboard(height: 0, from: notification)
+        
+        let duration:TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+        let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
+        
+        self.resize(to: .intrinsic, duration: duration, options: animationCurve, animated: true, complete: {
+            self.resize(to: .intrinsic)
+        })
     }
     
     private func adjustForKeyboard(height: CGFloat, from notification: Notification) {
@@ -524,9 +544,6 @@ public class SheetViewController: UIViewController {
         let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
         
         self.contentViewController.adjustForKeyboard(height: self.keyboardHeight)
-        self.resize(to: self.currentSize, duration: duration, options: animationCurve, animated: true, complete: {
-            self.resize(to: self.currentSize)
-        })
     }
     
     private func height(for size: SheetSize?) -> CGFloat {
