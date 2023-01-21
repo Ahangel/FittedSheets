@@ -517,6 +517,8 @@ public class SheetViewController: UIViewController {
         self.resize(to: .fullscreen, duration: duration, options: animationCurve, animated: true, complete: {
             self.resize(to: .fullscreen)
         })
+        
+        self.view.removeGestureRecognizer(self.panGestureRecognizer)
     }
     
     @objc func keyboardDismissed(_ notification: Notification) {
@@ -532,6 +534,8 @@ public class SheetViewController: UIViewController {
         self.resize(to: .intrinsic, duration: duration, options: animationCurve, animated: true, complete: {
             self.resize(to: .intrinsic)
         })
+        
+        self.view.addGestureRecognizer(self.panGestureRecognizer)
     }
     
     private func adjustForKeyboard(height: CGFloat, from notification: Notification) {

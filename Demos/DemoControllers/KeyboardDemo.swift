@@ -27,10 +27,12 @@ class KeyboardDemo: UIViewController, Demoable {
         
         let sheet = SheetViewController(
             controller: controller,
-            sizes: [.percent(0.5), .fullscreen],
+            sizes: [.percent(0.5)],
             options: SheetOptions(useInlineMode: useInlineMode))
         
-        sheet.autoAdjustToKeyboard = false
+        sheet.autoAdjustToKeyboard = true
+        sheet.allowPullingPastMaxHeight = false
+        sheet.allowPullingPastMinHeight = false
         
         addSheetEventLogging(to: sheet)
         
