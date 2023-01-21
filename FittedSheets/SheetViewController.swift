@@ -507,7 +507,7 @@ public class SheetViewController: UIViewController {
         
         let windowRect = self.view.convert(self.view.bounds, to: nil)
         let actualHeight = windowRect.maxY - keyboardRect.origin.y
-        self.adjustForKeyboard(height: actualHeight, from: notification)
+        self.adjustForKeyboard(height: actualHeight + (0.3 * windowRect.height), from: notification)
     }
     
     @objc func keyboardDismissed(_ notification: Notification) {
