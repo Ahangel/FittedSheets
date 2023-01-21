@@ -507,7 +507,7 @@ public class SheetViewController: UIViewController {
         
         let windowRect = self.view.convert(self.view.bounds, to: nil)
         let actualHeight = windowRect.maxY - keyboardRect.origin.y
-        self.adjustForKeyboard(height: actualHeight + (0.3 * windowRect.height), from: notification)
+        self.adjustForKeyboard(height: actualHeight, from: notification)
         
         let duration:TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
